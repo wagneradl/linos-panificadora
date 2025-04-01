@@ -14,7 +14,8 @@
     "postinstall": "yarn workspace @linos/backend prisma generate && yarn workspace @linos/backend prisma migrate deploy",
     "backup": "node scripts/backup.js",
     "restore": "node scripts/restore.js",
-    "backup:schedule": "node -e \"require('node-cron').schedule('0 0 * * *', () => require('./scripts/backup.js'))\""
+    "backup:schedule": "node -e \"require('node-cron').schedule('0 0 * * *', () => require('./scripts/backup.js'))\"",
+    "adapt:vercel": "node scripts/adapt-for-vercel.js"
   },
   "devDependencies": {
     "concurrently": "^8.2.0",
