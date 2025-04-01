@@ -2,10 +2,12 @@ services:
   - type: web
     name: linos-panificadora
     env: node
-    buildCommand: yarn install && npx prisma generate && yarn build
+    buildCommand: yarn install && yarn workspace @linos/backend prisma generate && yarn build
     startCommand: yarn start:prod
     region: sao
     plan: starter
+    healthCheckPath: /api/health
+    autoDeploy: true
     envVars:
       - key: DATABASE_URL
         value: file:/var/data/linos-padaria.db
@@ -19,3 +21,7 @@ services:
       name: data
       mountPath: /var/data
       sizeGB: 1
+    domains:
+      - linos-panificadora.onrender.com
+      # Caso queira usar um domínio personalizado, descomente a linha abaixo
+      # - www.linospanificadora.com.br
