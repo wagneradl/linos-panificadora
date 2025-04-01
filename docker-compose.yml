@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "10000:10000"
+    environment:
+      - DATABASE_URL=file:/var/data/linos-padaria.db
+      - NODE_ENV=production
+      - PORT=10000
+      - PDF_STORAGE_PATH=/var/data/pdfs
+    volumes:
+      - db_data:/var/data
+    restart: unless-stopped
+
+volumes:
+  db_data:
+    driver: local
