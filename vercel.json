@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "apps/backend/dist/main.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "apps/frontend/package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "apps/backend/dist/main.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "apps/frontend/$1"
+    }
+  ],
+  "env": {
+    "DATABASE_URL": "file:/var/data/linos-padaria.db",
+    "NODE_ENV": "production",
+    "PORT": "10000",
+    "PDF_STORAGE_PATH": "/var/data/pdfs"
+  }
+}
