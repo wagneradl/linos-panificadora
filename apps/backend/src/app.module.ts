@@ -7,6 +7,7 @@ import { PedidosModule } from './pedidos/pedidos.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { PdfModule } from './pdf/pdf.module';
 import { RelatoriosModule } from './relatorios/relatorios.module';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { RelatoriosModule } from './relatorios/relatorios.module';
     PedidosModule,
     PdfModule,
     RelatoriosModule,
+    HealthModule,
   ],
 })
 export class AppModule {}
