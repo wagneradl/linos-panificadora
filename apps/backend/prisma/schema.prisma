@@ -1,0 +1,66 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Produto {
+  id          Int      @id @default(autoincrement())
+  nome        String
+  descricao   String?
+  preco       Float
+  estoque     Int      @default(0)
+  categoria   String?
+  criadoEm    DateTime @default(now())
+  atualizadoEm DateTime @updatedAt
+  itensPedido ItemPedido[]
+
+  @@map("produtos")
+}
+
+model Cliente {
+  id          Int      @id @default(autoincrement())
+  nome        String
+  email       String?  @unique
+  telefone    String?
+  endereco    String?
+  criadoEm    DateTime @default(now())
+  atualizadoEm DateTime @updatedAt
+  pedidos     Pedido[]
+
+  @@map("clientes")
+}
+
+model Pedido {
+  id          Int         @id @default(autoincrement())
+  clienteId   Int
+  cliente     Cliente     @relation(fields: [clienteId], references: [id])
+  dataPedido  DateTime    @default(now())
+  status      String      @default("pendente") // pendente, processando, entregue, cancelado
+  valorTotal  Float
+  observacao  String?
+  itensPedido ItemPedido[]
+  criadoEm    DateTime    @default(now())
+  atualizadoEm DateTime   @updatedAt
+
+  @@map("pedidos")
+}
+
+model ItemPedido {
+  id          Int      @id @default(autoincrement())
+  pedidoId    Int
+  pedido      Pedido   @relation(fields: [pedidoId], references: [id], onDelete: Cascade)
+  produtoId   Int
+  produto     Produto  @relation(fields: [produtoId], references: [id])
+  quantidade  Int
+  precoUnitario Float
+  subtotal    Float
+
+  @@map("itens_pedido")
+}

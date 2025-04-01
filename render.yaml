@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: linos-panificadora
+    env: node
+    buildCommand: yarn install && npx prisma generate && yarn build
+    startCommand: yarn start:prod
+    region: sao
+    plan: starter
+    envVars:
+      - key: DATABASE_URL
+        value: file:/var/data/linos-padaria.db
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: PDF_STORAGE_PATH
+        value: /var/data/pdfs
+    disk:
+      name: data
+      mountPath: /var/data
+      sizeGB: 1
