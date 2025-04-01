@@ -1,0 +1,22 @@
+{
+  "name": "linos-panificadora",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "yarn workspaces run build",
+    "dev": "concurrently \"yarn workspace @linos/backend dev\" \"yarn workspace @linos/frontend dev\"",
+    "start": "yarn workspace @linos/backend start:prod",
+    "start:prod": "node apps/backend/dist/main",
+    "postinstall": "yarn workspace @linos/backend prisma generate && yarn workspace @linos/backend prisma migrate deploy"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
