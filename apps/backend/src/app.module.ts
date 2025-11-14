@@ -7,6 +7,9 @@ import { PrismaModule } from './prisma/prisma.module';
 import { HealthModule } from './health/health.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { ProdutosModule } from './produtos/produtos.module';
+import { ClientesModule } from './clientes/clientes.module';
+import { PedidosModule } from './pedidos/pedidos.module';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { RolesGuard } from './auth/guards/roles.guard';
 import { configuration, validationSchema } from './config';
@@ -37,10 +40,12 @@ import { configuration, validationSchema } from './config';
     AuthModule,
     UsersModule,
 
-    // TODO: Módulos de negócio serão adicionados nas próximas etapas
-    // - ProdutosModule (CRUD de produtos)
-    // - ClientesModule (CRUD de clientes)
-    // - PedidosModule (gestão de pedidos)
+    // Módulos de Negócio
+    ProdutosModule,
+    ClientesModule,
+    PedidosModule,
+
+    // TODO: Módulos adicionais para implementar no futuro
     // - PdfModule (geração de PDFs)
     // - RelatoriosModule (relatórios)
   ],
