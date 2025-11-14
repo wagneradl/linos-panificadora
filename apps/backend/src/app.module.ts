@@ -1,9 +1,14 @@
 import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { PrismaModule } from './prisma/prisma.module';
 import { HealthModule } from './health/health.module';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
+import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { RolesGuard } from './auth/guards/roles.guard';
 import { configuration, validationSchema } from './config';
 
 @Module({
@@ -28,14 +33,28 @@ import { configuration, validationSchema } from './config';
     PrismaModule,
     HealthModule,
 
+    // Autenticação e Autorização
+    AuthModule,
+    UsersModule,
+
     // TODO: Módulos de negócio serão adicionados nas próximas etapas
-    // - AuthModule (autenticação e autorização)
-    // - UsersModule (gestão de usuários)
     // - ProdutosModule (CRUD de produtos)
     // - ClientesModule (CRUD de clientes)
     // - PedidosModule (gestão de pedidos)
     // - PdfModule (geração de PDFs)
     // - RelatoriosModule (relatórios)
+  ],
+  providers: [
+    // Aplicar JwtAuthGuard globalmente
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+    // Aplicar RolesGuard globalmente
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
   ],
 })
 export class AppModule {}
