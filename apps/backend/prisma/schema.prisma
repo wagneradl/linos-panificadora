@@ -10,6 +10,49 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// ============================================
+// AUTENTICAÇÃO E AUTORIZAÇÃO
+// ============================================
+
+enum Role {
+  ADMIN     // Administrador completo do sistema
+  OPERATOR  // Operador (gestão de produtos, clientes, pedidos)
+  CLIENT    // Cliente (acesso limitado, futuro)
+}
+
+model User {
+  id          Int       @id @default(autoincrement())
+  email       String    @unique
+  username    String    @unique
+  password    String    // bcrypt hash
+  fullName    String
+  role        Role      @default(OPERATOR)
+  isActive    Boolean   @default(true)
+  lastLoginAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Relações
+  refreshTokens RefreshToken[]
+
+  @@map("users")
+}
+
+model RefreshToken {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@map("refresh_tokens")
+}
+
+// ============================================
+// GESTÃO DE NEGÓCIO
+// ============================================
+
 model Produto {
   id          Int      @id @default(autoincrement())
   nome        String
